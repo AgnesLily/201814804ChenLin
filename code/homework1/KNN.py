@@ -31,12 +31,16 @@ def process_data(path):
 
 # Euclidean distance
 def cal_euclidean(train_item, test_item):
-    vec_train = train_item
-    vec_test = test_item
-    sum = 0
-    for i in range(len(vec_train)):
-        sum += (vec_train[i] - vec_test[i]) * (vec_train[i] - vec_test[i])
-    distance = math.sqrt(sum)
+    vec_train = np.array(train_item)
+    vec_test = np.array(test_item)
+    vec_sub = vec_train - vec_test
+    vec_sub = vec_sub**2
+    distance = np.sum(vec_sub)
+    distance = np.sqrt(distance)
+    # sum = 0
+    # for i in range(len(vec_train)):
+    #     sum += (vec_train[i] - vec_test[i]) * (vec_train[i] - vec_test[i])
+    # distance = math.sqrt(sum)
     return distance
 
 
@@ -64,8 +68,11 @@ def KNN(path, K):
         for index in range(len(train_x)):
             train_item = train_x[index]
             dis = cal_euclidean(train_item, test_item)
-            result.append(dis)
+            dis = cal_cosine(train_item, test_item)
+            # result.append(dis)
+        # print("done")
         min_distances = map(result.index, heapq.nsmallest(K, result))
+        # print("done")
         # print(list(min_distances))
         labels = []
         for item in list(min_distances):
@@ -82,9 +89,10 @@ def KNN(path, K):
         if labels_pre[i] == labels_true[i]:
             right += 1
     acc = right/len(labels_pre)
-    print("acc is :" + acc)
+    print("The acc of KNN classifier with euclidean distance is :" + acc)
 
 
 # 计算acc
 if __name__ == "__main__":
-    KNN(file_path, 5)
+    for i in range(1, 10):
+        KNN(file_path, i)
