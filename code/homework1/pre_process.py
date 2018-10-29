@@ -1,5 +1,4 @@
 import os
-import string
 import math
 from textblob import TextBlob
 from textblob import Word
@@ -8,7 +7,7 @@ from nltk.corpus import stopwords
 path = "../../dataset/20news-18828"
 
 
-# load data
+# 加载数据
 def load_data(path):
     files = os.listdir(path)
     file_dir = dict()
