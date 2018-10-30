@@ -4,7 +4,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import heapq
 from collections import Counter
-
+from sklearn.metrics.pairwise import euclidean_distances
+from sklearn.metrics.pairwise import cosine_distances
 file_path = "../../data"
 
 
@@ -59,21 +60,39 @@ def KNN(path, K):
     labels_true = []
     labels_pre = []
     # 遍历测试集中的每个元素
-    for indexl in range(len(test_x)):
-        test_item = test_x[indexl]
-        labels_true.append(test_y[indexl])
-        # test_index_true = test_y[indexl]
-        result = []
-        # 遍历训练集中的每个元素，找出距离最近的k个元素的类别
-        for index in range(len(train_x)):
-            train_item = train_x[index]
-            dis = cal_euclidean(train_item, test_item)
-            dis = cal_cosine(train_item, test_item)
-            # result.append(dis)
-        # print("done")
-        min_distances = map(result.index, heapq.nsmallest(K, result))
-        # print("done")
-        # print(list(min_distances))
+    # for indexl in range(len(test_x)):
+    #     test_item = test_x[indexl]
+    #     labels_true.append(test_y[indexl])
+    #     # test_index_true = test_y[indexl]
+    #     result = []
+    #     # 遍历训练集中的每个元素，找出距离最近的k个元素的类别
+    #     for index in range(len(train_x)):
+    #         train_item = train_x[index]
+    #         # dis = cal_euclidean(train_item, test_item)
+    #         dis = euclidean_distances(np.array(train_item), np.array(test_item))
+    #         print(dis)
+    #         # dis = cal_cosine(train_item, test_item)
+    #         result.append(dis)
+    #     print("done")
+    #     min_distances = map(result.index, heapq.nsmallest(K, result))
+    #     print("done")
+    #     # print(list(min_distances))
+    #     labels = []
+    #     for item in list(min_distances):
+    #         pre_test_label = train_y[item]
+    #         labels.append(pre_test_label)
+    #     label_counts = Counter(labels)
+    #     top_one = label_counts.most_common(1)
+    #     labels_pre.append(top_one[0][0])
+    #     print(indexl)
+    #     print(top_one[0][0])
+    dis_matrix = euclidean_distances(test_x, train_x)
+    # print(len(dis_matrix))
+    for index in range(len(dis_matrix)):
+        labels_true.append(test_y[index])
+        dis_array = dis_matrix[index]
+        dis_array = dis_array.tolist()
+        min_distances = map(dis_array.index, heapq.nsmallest(K, dis_array))
         labels = []
         for item in list(min_distances):
             pre_test_label = train_y[item]
@@ -81,7 +100,6 @@ def KNN(path, K):
         label_counts = Counter(labels)
         top_one = label_counts.most_common(1)
         labels_pre.append(top_one[0][0])
-        # print(indexl)
         # print(top_one[0][0])
     # 计算分类准确率
     right = 0
@@ -89,10 +107,10 @@ def KNN(path, K):
         if labels_pre[i] == labels_true[i]:
             right += 1
     acc = right/len(labels_pre)
-    print("The acc of KNN classifier with euclidean distance is :" + acc)
+    print("When k is " + str(K) + " ,the acc of KNN classifier with euclidean distance is :" + str(acc))
 
 
 # 计算acc
 if __name__ == "__main__":
-    for i in range(1, 10):
+    for i in range(1, 51):
         KNN(file_path, i)
