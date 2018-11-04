@@ -1,6 +1,6 @@
 # Data Mining project
 
-1. KNN文档分类
+# 1. KNN文档分类
 
 1）预处理文本数据集，并且得到每个文本的VSM表示。
 
