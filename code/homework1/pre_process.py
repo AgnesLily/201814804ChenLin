@@ -133,11 +133,17 @@ def cal_global(dict_tf):
 # 使用过滤掉停用词和频率低的单词建立词典
 def filter_dict(directory):
     final_dict = directory
+    result = open("../../data/dict.txt", 'w', encoding='utf-8')
+    all_str = ''
     for key in directory.copy():
         if directory[key][1] < 15:
             final_dict.pop(key)
+        else:
+            all_str += str(key) + '\n'
     # print(final_dict)
     # print(len(final_dict))
+    result.write(all_str)
+    result.close()
     return final_dict
 
 
@@ -172,6 +178,6 @@ def cal_tfidf(final_dict, current):
             result.close()
 
 
-cal_tfidf(final_dict, current)
+# cal_tfidf(final_dict, current)
 
 

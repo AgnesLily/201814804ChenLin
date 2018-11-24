@@ -86,7 +86,9 @@ def KNN(path, K):
     #     labels_pre.append(top_one[0][0])
     #     print(indexl)
     #     print(top_one[0][0])
-    dis_matrix = euclidean_distances(test_x, train_x)
+    # dis_matrix = euclidean_distances(test_x, train_x)
+    dis_matrix = cosine_distances(test_x, train_x)
+
     # print(len(dis_matrix))
     for index in range(len(dis_matrix)):
         labels_true.append(test_y[index])
@@ -107,10 +109,10 @@ def KNN(path, K):
         if labels_pre[i] == labels_true[i]:
             right += 1
     acc = right/len(labels_pre)
-    print("When k is " + str(K) + " ,the acc of KNN classifier with euclidean distance is :" + str(acc))
+    print("When k is " + str(K) + " ,the acc of KNN classifier with cosine distance is :" + str(acc))
 
 
 # 计算acc
 if __name__ == "__main__":
-    for i in range(1, 51):
+    for i in range(1, 61):
         KNN(file_path, i)
