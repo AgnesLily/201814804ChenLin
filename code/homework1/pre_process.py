@@ -136,7 +136,7 @@ def filter_dict(directory):
     result = open("../../data/dict.txt", 'w', encoding='utf-8')
     all_str = ''
     for key in directory.copy():
-        if directory[key][1] < 15:
+        if directory[key][1] < 40:
             final_dict.pop(key)
         else:
             all_str += str(key) + '\n'
